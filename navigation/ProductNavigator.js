@@ -16,7 +16,9 @@ const StackNavigator = () => {
             headerStyle:{
                 backgroundColor:Platform.OS==='android'?Colors.primary:''
             },
+            headerTitleStyle:{fontFamily:'open-sans-bold'},
             headerTintColor:Platform.OS==='android'?'white':Colors.primary,
+            headerBackTitleStyle:{fontFamily:'open-sans'}
         }}>
             <Stack.Screen name="Products" component={ProductsOverviewScreen}/>
             <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />

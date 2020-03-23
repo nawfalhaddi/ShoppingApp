@@ -28,13 +28,15 @@ cartItem:{
     backgroundColor:'white',
     flexDirection:'row',
     justifyContent:'space-between',
-    marginHorizontal:20,
+    marginHorizontal:10,
     marginVertical:5,
     borderRadius:10,
 },
 itemData:{
     flexDirection:'row',
     alignItems:'center',
+    justifyContent:'space-between',
+    width:'50%'
 
 },
 quantity:{
@@ -44,11 +46,13 @@ quantity:{
 },
 mainText:{
     fontFamily:'open-sans-bold',
-    fontSize:16
+    fontSize:16,
+    textAlign:'center',
+    paddingHorizontal:10
 },
 
 deleteButton:{
-    marginLeft:20
+    marginLeft:20,
 }
 
 })

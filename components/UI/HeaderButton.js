@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     customHeaderButton: {
         alignItems: "center",
         justifyContent: 'center',
-        marginHorizontal: 10
+        margin: 10
     },
     buttonContainer:{
         borderRadius:20,

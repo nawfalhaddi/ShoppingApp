@@ -1,15 +1,26 @@
 import React,{useLayoutEffect} from 'react';
-import { FlatList ,Text} from 'react-native';
+import { FlatList ,Text, Platform} from 'react-native';
 import { useSelector,useDispatch } from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
 import * as cartActions from '../../store/actions/cart'
+import CustomHeaderButton from '../../components/UI/HeaderButton';
+import Colors from '../../constant/Colors';
 
 
 const ProductsOverviewScreen = props => {
 
     const {navigation}=props;
     useLayoutEffect(()=>{
-        navigation.setOptions({headerTitle:'All Products'})
+        navigation.setOptions({
+            headerTitle:'All Products',
+            headerRight:()=>(
+                <CustomHeaderButton iconName={Platform.OS==='android'?'md-cart':'ios-cart'} 
+                size={23} 
+                color={Platform.OS==='android'?'white':Colors.primary}
+                onPressing={()=>navigation.navigate('Cart')}
+                />
+            )
+        })
         return ()=>{}
     },[navigation]);
 

@@ -5,6 +5,7 @@ import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen'
 import { Platform } from 'react-native';
 import Colors from '../constant/Colors';
+import CartScreen from '../screens/shop/CartScreen';
 
 
 
@@ -22,6 +23,7 @@ const StackNavigator = () => {
         }}>
             <Stack.Screen name="Products" component={ProductsOverviewScreen}/>
             <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
+            <Stack.Screen name="Cart" component={CartScreen} />
         </Stack.Navigator>
     )
 }

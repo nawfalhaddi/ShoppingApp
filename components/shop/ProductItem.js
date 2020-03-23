@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
-        margin: 20,
-        height: 300,
         borderRadius: 10,
+        elevation: 3,
         backgroundColor: 'white',
-        elevation: 3
+        margin: 20,
+        height: 300,                 
     },
     image: {
         width: '100%',

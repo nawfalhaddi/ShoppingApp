@@ -4,9 +4,10 @@ import { useSelector,useDispatch } from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
 import CustomHeaderButton from '../../components/UI/HeaderButton';
 import Colors from '../../constant/Colors';
-import * as productActions from '../../store/actions/products'
+import * as productActions from '../../store/actions/products';
 
 const UserProductsScreen = props => {
+
     const userProducts =useSelector(state => state.products.userProducts);
     const {navigation}=props;
     useLayoutEffect(()=>{
@@ -18,12 +19,22 @@ const UserProductsScreen = props => {
                 color={Platform.OS==='android'?'white':Colors.primary}
                 onPressing={()=>navigation.toggleDrawer()}
                 />
+            ),
+            headerRight: () => (
+                <CustomHeaderButton iconName={Platform.OS === 'android' ? 'md-add-circle' : 'ios-add-circle'}
+                    size={23}
+                    color={Platform.OS === 'android' ? 'white' : Colors.primary}
+                    onPressing={() => {navigation.navigate('EditProduct')}}
+                />
             )
         })
         return ()=>{}
     },[navigation]);
 
     const dispatch=useDispatch();
+    const editProductHandler=(id)=>{
+        navigation.navigate('EditProduct',{productId:id});
+    }
 
     return (
         <View>
@@ -32,9 +43,9 @@ const UserProductsScreen = props => {
                 keyExtractor={item=>item.id}
                 renderItem={({item}) => 
                 <ProductItem item={item} 
-                onSelect={()=>{}}>
+                onSelect={()=>{editProductHandler(item.id)}}>
                      
-                    <Button color={Colors.primary} title="Edit" onPress={() => {}} />
+                    <Button color={Colors.primary} title="Edit" onPress={() => {editProductHandler(item.id)}} />
                     <Button color={Colors.primary} title="Delete" onPress={()=>{dispatch(productActions.deleteProduct(item.id))}} />
 
                 </ProductItem>}

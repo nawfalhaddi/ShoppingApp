@@ -19,6 +19,13 @@ const ProductsOverviewScreen = props => {
                 color={Platform.OS==='android'?'white':Colors.primary}
                 onPressing={()=>navigation.navigate('Cart')}
                 />
+            ),
+            headerLeft:()=>(
+                <CustomHeaderButton iconName={Platform.OS==='android'?'md-menu':'ios-menu'} 
+                size={23} 
+                color={Platform.OS==='android'?'white':Colors.primary}
+                onPressing={()=>navigation.toggleDrawer()}
+                />
             )
         })
         return ()=>{}

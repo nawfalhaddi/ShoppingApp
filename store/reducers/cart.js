@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, ADD_ORDER } from "../types";
+import { ADD_TO_CART, REMOVE_FROM_CART, ADD_ORDER,DELETE_PRODUCT } from "../types";
 import CartItem from '../../models/cart-item';
 
 const initialState = {
@@ -30,22 +30,34 @@ export default (state = initialState, action) => {
                 totalAmount: state.totalAmount + prodPrice
             }
         case REMOVE_FROM_CART:
-            const currentProd=state.items[action.pid];
+            const currentProd = state.items[action.pid];
             let updatedCartItems;
-            if(currentProd.quantity>1){
-                const updatedCartItem=new CartItem(currentProd.quantity-1,currentProd.productPrice,currentProd.productTitle,currentProd.sum-currentProd.productPrice);
-                updatedCartItems={...state.items,[action.pid]:updatedCartItem};
-            }else{
-                updatedCartItems={...state.items};
+            if (currentProd.quantity > 1) {
+                const updatedCartItem = new CartItem(currentProd.quantity - 1, currentProd.productPrice, currentProd.productTitle, currentProd.sum - currentProd.productPrice);
+                updatedCartItems = { ...state.items, [action.pid]: updatedCartItem };
+            } else {
+                updatedCartItems = { ...state.items };
                 delete updatedCartItems[action.pid];
             }
-            return{
+            return {
                 ...state,
-                items:updatedCartItems,
-                totalAmount:Math.abs(state.totalAmount - currentProd.productPrice)
+                items: updatedCartItems,
+                totalAmount: Math.abs(state.totalAmount - currentProd.productPrice)
             }
         case ADD_ORDER:
             return initialState;
+        case DELETE_PRODUCT:
+            if(!state.items[action.pid]){
+                return state;
+            }
+            const updatedItems=state.items;
+            const itemTotal=state.items[action.pid].sum;
+            delete updatedItems[action.pid];
+            return {
+                ...state,
+                items:updatedItems,
+                totalAmount:state.totalAmount-itemTotal
+            }
         default:
             return state;
     }

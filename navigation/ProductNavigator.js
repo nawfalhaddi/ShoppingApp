@@ -9,6 +9,7 @@ import Colors from '../constant/Colors';
 import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
 import { Ionicons } from '@expo/vector-icons';
+import UserProductsScreen from '../screens/user/UserProductsScreen';
 
 const screenNavOptions = {
     headerStyle: {
@@ -32,16 +33,25 @@ const StackNavigator = () => {
     )
 }
 
-const OrdersStack = createStackNavigator();
-
 const OrderStackNavigator = () => {
     return (
-        <OrdersStack.Navigator
+        <Stack.Navigator
             screenOptions={screenNavOptions}>
-            <OrdersStack.Screen name="Orders" component={OrdersScreen} />
-        </OrdersStack.Navigator>
+            <Stack.Screen name="Orders" component={OrdersScreen} />
+        </Stack.Navigator>
     )
 }
+
+const AdminNavigator = () => {
+    return (
+        <Stack.Navigator
+            screenOptions={screenNavOptions}>
+            <Stack.Screen name="Admin" component={UserProductsScreen} />
+        </Stack.Navigator>
+    )
+}
+
+
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
     return (
@@ -66,6 +76,15 @@ const DrawerNavigator = () => {
                             name={Platform.OS === 'android' ? 'md-list' : 'ios-list'} />
                     )
                 }} />
+                <Drawer.Screen name="Admin" component={AdminNavigator}
+                options={{
+                    drawerLabel: 'Admin',
+                    drawerIcon: drawerConfig => (
+                        <Ionicons color={drawerConfig.color} size={23}
+                            name={Platform.OS === 'android' ? 'md-create' : 'ios-create'} />
+                    )
+                }} />
+                
         </Drawer.Navigator>
     )
 }

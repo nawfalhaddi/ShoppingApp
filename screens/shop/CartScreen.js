@@ -1,20 +1,21 @@
-import React , {useLayoutEffect} from 'react';
+import React, { useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
-import { useSelector , useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Colors from '../../constant/Colors';
 import CartItem from '../../components/shop/CartItem';
 import * as cartActions from '../../store/actions/cart';
 import * as ordersActions from '../../store/actions/orders'
+import Card from '../../components/UI/Card';
 
 const CartScreen = props => {
 
-    const {navigation}=props;
-    useLayoutEffect(()=>{
+    const { navigation } = props;
+    useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle:'Your Cart',
+            headerTitle: 'Your Cart',
         })
-        return ()=>{}
-    },[navigation]);
+        return () => { }
+    }, [navigation]);
 
 
 
@@ -25,41 +26,41 @@ const CartScreen = props => {
         let transformedCartItems = [];
         for (const key in state.cart.items) {
             transformedCartItems.push({
-                productId:key,
-                productTitle:state.cart.items[key].productTitle,
-                productPrice:state.cart.items[key].productPrice,
-                quantity:state.cart.items[key].quantity,
-                sum:state.cart.items[key].sum,
+                productId: key,
+                productTitle: state.cart.items[key].productTitle,
+                productPrice: state.cart.items[key].productPrice,
+                quantity: state.cart.items[key].quantity,
+                sum: state.cart.items[key].sum,
             })
         }
 
-        return transformedCartItems.sort((a,b)=>a.productId>b.productId?1:-1);
+        return transformedCartItems.sort((a, b) => a.productId > b.productId ? 1 : -1);
     });
 
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
 
     return (
         <View style={styles.screen}>
-            <View style={styles.summary}>
+            <Card style={styles.summary}>
                 <Text style={styles.summaryText}>
                     Total: <Text style={styles.amount}>${cartTotalAmount.toFixed(2)}</Text>
                 </Text>
-                <Button 
-                title='Order Now' 
-                color={Colors.accent}
-                disabled={cartItems.length===0?true:false} 
-                onPress={()=>{dispatch(ordersActions.addOrder(cartItems,cartTotalAmount))}}
+                <Button
+                    title='Order Now'
+                    color={Colors.accent}
+                    disabled={cartItems.length === 0 ? true : false}
+                    onPress={() => { dispatch(ordersActions.addOrder(cartItems, cartTotalAmount)) }}
                 />
-            </View>
-            <FlatList 
+            </Card>
+            <FlatList
                 data={cartItems}
-                keyExtractor={item=>item.productId}
-                renderItem={({item})=>(
-                    <CartItem quantity={item.quantity} 
-                    title={item.productTitle} 
-                    amount={item.sum} 
-                    deletable={true}
-                    onRemove={()=>{ dispatch(cartActions.removeFromCart(item.productId))}}/>
+                keyExtractor={item => item.productId}
+                renderItem={({ item }) => (
+                    <CartItem quantity={item.quantity}
+                        title={item.productTitle}
+                        amount={item.sum}
+                        deletable={true}
+                        onRemove={() => { dispatch(cartActions.removeFromCart(item.productId)) }} />
                 )}
             />
         </View>
@@ -75,12 +76,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 20,
         padding: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        borderRadius: 10,
-        elevation: 3,
-        backgroundColor: 'white',
+
     },
     summaryText: {
         fontFamily: 'open-sans-bold',

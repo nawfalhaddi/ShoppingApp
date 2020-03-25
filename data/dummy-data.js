@@ -3,7 +3,7 @@ import Product from '../models/product';
 const PRODUCTS = [
   new Product(
     'p1',
-    'u1',
+    'u2',
     'Red Shirt',
     'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
     'A red t-shirt, perfect for days with non-red weather.',
@@ -27,7 +27,7 @@ const PRODUCTS = [
   ),
   new Product(
     'p4',
-    'u3',
+    'u1',
     'The Book - Limited Edition',
     'https://images.pexels.com/photos/46274/pexels-photo-46274.jpeg?cs=srgb&dl=blur-blurred-book-pages-46274.jpg&fm=jpg',
     "What the content is? Why would that matter? It's a limited edition!",

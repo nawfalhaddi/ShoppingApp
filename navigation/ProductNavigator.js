@@ -58,8 +58,9 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
     return (
         <Drawer.Navigator drawerContentOptions={{
-            backgroundColor:Platform.OS==='android'?Colors.primary:'',
-            activeTintColor:Platform.OS==='android'?'white':Colors.primary,
+            backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
+            activeTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+            inactiveTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
             itemStyle: { color: Colors.primary }
         }} >
             <Drawer.Screen name="Products" component={StackNavigator}
@@ -78,7 +79,7 @@ const DrawerNavigator = () => {
                             name={Platform.OS === 'android' ? 'md-list' : 'ios-list'} />
                     )
                 }} />
-                <Drawer.Screen name="Admin" component={AdminNavigator}
+            <Drawer.Screen name="Admin" component={AdminNavigator}
                 options={{
                     drawerLabel: 'Admin',
                     drawerIcon: drawerConfig => (
@@ -86,7 +87,7 @@ const DrawerNavigator = () => {
                             name={Platform.OS === 'android' ? 'md-create' : 'ios-create'} />
                     )
                 }} />
-                
+
         </Drawer.Navigator>
     )
 }

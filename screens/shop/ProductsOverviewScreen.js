@@ -10,6 +10,7 @@ import Colors from '../../constant/Colors';
 
 const ProductsOverviewScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState()
     const dispatch = useDispatch();
     const { navigation } = props;
@@ -19,23 +20,15 @@ const ProductsOverviewScreen = props => {
     }
 
     const loadProducts = useCallback(async () => {
-        console.log('product loaded');
-
-        setError(null);
-        setIsLoading(true);
+        setIsRefreshing(true);
         try {
             await dispatch(productActions.fetchProducts());
         } catch (error) {
             setError(error.message);
         }
+        setIsRefreshing(false);
+    }, [dispatch, setError, setIsRefreshing]);
 
-        setIsLoading(false);
-    }, [dispatch, setError, setIsLoading]);
-
-
-    // useEffect(() => {
-    //     loadProducts();
-    // }, [dispatch, loadProducts])
 
     useEffect(() => {
         const FocusSub = navigation.addListener('focus', loadProducts);
@@ -43,6 +36,13 @@ const ProductsOverviewScreen = props => {
             FocusSub.remove();
         }
     }, [loadProducts])
+
+    useEffect(() => {
+        setIsLoading(true);
+        loadProducts().then(() => {
+            setIsLoading(false);
+        });
+    }, [dispatch, loadProducts, setIsLoading]);
 
 
     useLayoutEffect(() => {
@@ -64,7 +64,7 @@ const ProductsOverviewScreen = props => {
             )
         })
         return () => { }
-    }, [navigation]);
+    }, [navigation, loadProducts]);
 
 
 
@@ -88,7 +88,7 @@ const ProductsOverviewScreen = props => {
         </View>
     }
 
-    return <FlatList
+    return <FlatList onRefresh={loadProducts} refreshing={isRefreshing}
         data={products}
         renderItem={({ item }) =>
             <ProductItem item={item} onSelect={() => { selectHandler('ProductDetail', item.id) }}>

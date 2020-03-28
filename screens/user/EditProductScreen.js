@@ -1,10 +1,10 @@
-import React, { useLayoutEffect } from 'react';
-import { StyleSheet, View, Text, Platform, ScrollView, TextInput, KeyboardAvoidingView, } from 'react-native';
+import React, { useState, useLayoutEffect } from 'react';
+import { StyleSheet, View, Text, Platform, ScrollView, TextInput, KeyboardAvoidingView, ActivityIndicator, Alert } from 'react-native';
 import Colors from '../../constant/Colors';
 import CustomHeaderButton from '../../components/UI/HeaderButton';
 import { useSelector, useDispatch } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
-import { Formik } from 'formik';
+import { Formik, } from 'formik';
 import * as yup from 'yup';
 
 
@@ -17,6 +17,8 @@ const EditProductScreen = props => {
     const imageUrl = editedProduct ? editedProduct.imageUrl : '';
     const price = '';
     const description = editedProduct ? editedProduct.description : '';
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
 
     const validationSchema = yup.object().shape({
         title: yup.string().required('Ce champ est obligatoire').min(4, 'interdit moins 4 lettres'),
@@ -28,13 +30,23 @@ const EditProductScreen = props => {
 
     const dispatch = useDispatch();
 
-    const submitHandler = (values) => {
-        if (editedProduct) {
-            dispatch(productsActions.updateProduct(productId, values.title, values.description, values.imageUrl));
-        } else {
-            dispatch(productsActions.createProduct(values.title, values.description, values.imageUrl, +values.price));
+    const submitHandler = async (values) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            if (editedProduct) {
+                await dispatch(productsActions.updateProduct(productId, values.title, values.description, values.imageUrl));
+            } else {
+                await dispatch(productsActions.createProduct(values.title, values.description, values.imageUrl, +values.price));
+            }
+            setIsLoading(false);
+            navigation.pop(1);
+
+        } catch (err) {
+            setIsLoading(false);
+            setError(err.message);
         }
-        navigation.pop(1);
+
     }
 
 
@@ -52,7 +64,18 @@ const EditProductScreen = props => {
             ),
         })
         return () => { }
-    }, [navigation, dispatch, productId, title, description, imageUrl, price]);
+    }, [navigation, dispatch, productId, title, description, imageUrl, price, isLoading, error]);
+
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size='large' color={Colors.primary} />
+            </View>
+        )
+    }
+    if (error) {
+        Alert.alert('Error', error, [{ title: 'Okay' }]);
+    }
 
 
     return (
@@ -157,6 +180,11 @@ const styles = StyleSheet.create({
         color: 'red',
         fontFamily: 'open-sans',
         fontSize: 10
+    },
+    centered: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center'
     }
 })
 

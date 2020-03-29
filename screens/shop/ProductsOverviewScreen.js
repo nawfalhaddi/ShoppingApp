@@ -32,8 +32,8 @@ const ProductsOverviewScreen = props => {
 
     useEffect(() => {
         const FocusSub = navigation.addListener('focus', loadProducts);
+        // FocusSub.remove();
         return () => {
-            FocusSub.remove();
         }
     }, [loadProducts])
 

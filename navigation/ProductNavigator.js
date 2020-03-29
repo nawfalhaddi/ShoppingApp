@@ -13,6 +13,7 @@ import UserProductsScreen from '../screens/user/UserProductsScreen';
 import EditProductScreen from '../screens/user/EditProductScreen';
 import AuthenticateScreen from '../screens/auth/AuthenticateScreen';
 import { useSelector } from 'react-redux'
+import StartupScreen from '../screens/StartupScreen';
 
 const screenNavOptions = {
     headerStyle: {
@@ -57,11 +58,15 @@ const AdminStackNavigator = () => {
 
 const AuthStackNavigator = () => {
     return (
-        <Stack.Navigator
+        <Stack.Navigator initialRouteName="Startup"
             screenOptions={screenNavOptions}>
+            <Stack.Screen name="Startup" component={StartupScreen} options={{
+                animationTypeForReplace: 'push'
+            }} />
             <Stack.Screen name="Authenticate" component={AuthenticateScreen} options={{
                 animationTypeForReplace: 'pop'
             }} />
+
         </Stack.Navigator>
     )
 }
@@ -111,7 +116,7 @@ const ProductNavigator = props => {
     return (
         <NavigationContainer>
 
-            {!token ? <AuthStackNavigator /> : <DrawerNavigator />}
+            {!token && !userId ? <AuthStackNavigator /> : <DrawerNavigator />}
         </NavigationContainer>
     )
 }

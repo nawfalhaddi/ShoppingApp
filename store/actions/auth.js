@@ -1,4 +1,12 @@
-import { SIGNUP, LOGIN } from '../types'
+import { SIGNUP, LOGIN } from '../types';
+import { AsyncStorage } from 'react-native';
+
+export const authenticate = (userId, token) => {
+    return (dispatch) => {
+        dispatch({ type: LOGIN, token: token, userId: userId });
+    }
+}
+
 export const signup = (email, password) => {
     return async dispatch => {
         const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC6pMurOATdKgW5TTn-2rBnKeelPKFgPgg', {
@@ -23,7 +31,9 @@ export const signup = (email, password) => {
             throw new Error(message);
         }
         const resData = await response.json();
-        dispatch({ type: SIGNUP, token: resData.idToken, userId: resData.localId })
+        dispatch({ type: SIGNUP, token: resData.idToken, userId: resData.localId });
+        const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
+        saveDataToStorage(resData.idToken, resData.localId, expirationDate);
     }
 }
 
@@ -55,6 +65,18 @@ export const login = (email, password) => {
         }
         const resData = await response.json();
 
-        dispatch({ type: LOGIN, token: resData.idToken, userId: resData.localId })
+        dispatch({ type: LOGIN, token: resData.idToken, userId: resData.localId });
+
+        const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
+        saveDataToStorage(resData.idToken, resData.localId, expirationDate);
     }
+}
+
+
+const saveDataToStorage = (token, userId, expirationDate) => {
+    AsyncStorage.setItem('userData', JSON.stringify({
+        token: token,
+        userId: userId,
+        expiryDate: expirationDate.toISOString(),
+    }))
 }

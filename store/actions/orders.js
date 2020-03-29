@@ -3,9 +3,10 @@ import Order from '../../models/order'
 
 export const fetchOrder = () => {
 
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId;
         try {
-            const response = await fetch('https://rn-shop-app-d2beb.firebaseio.com/orders/u1.json');
+            const response = await fetch(`https://rn-shop-app-d2beb.firebaseio.com/orders/${userId}.json`);
             if (!response.ok) {
                 throw new Error('Something went wrong');
             }
@@ -32,9 +33,11 @@ export const fetchOrder = () => {
 }
 
 export const addOrder = (cartItems, totalAmount) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         const date = new Date();
-        const response = await fetch('https://rn-shop-app-d2beb.firebaseio.com/orders/u1.json', {
+        const userId = getState().auth.userId;
+        const token = getState().auth.token;
+        const response = await fetch(`https://rn-shop-app-d2beb.firebaseio.com/orders/${userId}.json?auth=${token}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

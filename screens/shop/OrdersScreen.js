@@ -52,6 +52,11 @@ const OrdersScreen = props => {
         </View>
     }
 
+    if (orders.length === 0) {
+        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 5 }}>
+            <Text style={{ textAlign: 'center' }}>No Orders found , Please start adding new items to your cart and order them!</Text>
+        </View>
+    }
 
 
     return (

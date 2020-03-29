@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { FlatList, View, Platform, Button, Alert } from 'react-native';
+import { FlatList, View, Platform, Button, Alert, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
 import CustomHeaderButton from '../../components/UI/HeaderButton';
@@ -39,6 +39,12 @@ const UserProductsScreen = props => {
         Alert.alert('Are You Sure', 'Do you really want to delete the product', [
             { text: 'No', style: 'default' }, { text: 'yes', style: 'destructive', onPress: () => { dispatch(productActions.deleteProduct(id)) } }
         ])
+    }
+
+    if (userProducts.length === 0) {
+        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 5 }}>
+            <Text style={{ textAlign: 'center' }}>No Products found , Please start adding new products!</Text>
+        </View>
     }
 
     return (

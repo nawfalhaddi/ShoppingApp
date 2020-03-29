@@ -11,6 +11,8 @@ import OrdersScreen from '../screens/shop/OrdersScreen';
 import { Ionicons } from '@expo/vector-icons';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import EditProductScreen from '../screens/user/EditProductScreen';
+import AuthenticateScreen from '../screens/auth/AuthenticateScreen';
+import { useSelector } from 'react-redux'
 
 const screenNavOptions = {
     headerStyle: {
@@ -43,12 +45,23 @@ const OrderStackNavigator = () => {
     )
 }
 
-const AdminNavigator = () => {
+const AdminStackNavigator = () => {
     return (
         <Stack.Navigator
             screenOptions={screenNavOptions}>
             <Stack.Screen name="Admin" component={UserProductsScreen} />
             <Stack.Screen name="EditProduct" component={EditProductScreen} />
+        </Stack.Navigator>
+    )
+}
+
+const AuthStackNavigator = () => {
+    return (
+        <Stack.Navigator
+            screenOptions={screenNavOptions}>
+            <Stack.Screen name="Authenticate" component={AuthenticateScreen} options={{
+                animationTypeForReplace: 'pop'
+            }} />
         </Stack.Navigator>
     )
 }
@@ -79,7 +92,7 @@ const DrawerNavigator = () => {
                             name={Platform.OS === 'android' ? 'md-list' : 'ios-list'} />
                     )
                 }} />
-            <Drawer.Screen name="Admin" component={AdminNavigator}
+            <Drawer.Screen name="Admin" component={AdminStackNavigator}
                 options={{
                     drawerLabel: 'Admin',
                     drawerIcon: drawerConfig => (
@@ -93,9 +106,12 @@ const DrawerNavigator = () => {
 }
 
 const ProductNavigator = props => {
+    const token = useSelector(state => state.auth.token);
+    const userId = useSelector(state => state.auth.userId);
     return (
         <NavigationContainer>
-            <DrawerNavigator />
+
+            {!token ? <AuthStackNavigator /> : <DrawerNavigator />}
         </NavigationContainer>
     )
 }

@@ -1,4 +1,4 @@
-import { SIGNUP, LOGIN } from '../types';
+import { SIGNUP, LOGIN, LOGOUT } from '../types';
 import { AsyncStorage } from 'react-native';
 
 export const authenticate = (userId, token) => {
@@ -7,6 +7,10 @@ export const authenticate = (userId, token) => {
     }
 }
 
+export const logout = () => {
+    clearDataFromStorage();
+    return { type: LOGOUT }
+}
 export const signup = (email, password) => {
     return async dispatch => {
         const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC6pMurOATdKgW5TTn-2rBnKeelPKFgPgg', {
@@ -79,4 +83,8 @@ const saveDataToStorage = (token, userId, expirationDate) => {
         userId: userId,
         expiryDate: expirationDate.toISOString(),
     }))
+}
+
+const clearDataFromStorage = () => {
+    AsyncStorage.clear();
 }

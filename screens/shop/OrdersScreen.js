@@ -39,11 +39,9 @@ const OrdersScreen = props => {
     )
 
     useEffect(() => {
-        const FocusSub = navigation.addListener('focus', dispatchFetchOrders);
-        return () => {
-            FocusSub.remove();
-        }
-    }, [dispatch, setIsLoading])
+        navigation.addListener('focus', dispatchFetchOrders);
+        return () => { }
+    }, [dispatch, navigation])
 
 
     if (isLoading) {

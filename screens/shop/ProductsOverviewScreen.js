@@ -31,17 +31,18 @@ const ProductsOverviewScreen = props => {
 
 
     useEffect(() => {
-        const FocusSub = navigation.addListener('focus', loadProducts);
+        navigation.addListener('focus', loadProducts);
         // FocusSub.remove();
-        return () => {
-        }
-    }, [loadProducts])
+        // return () => { }
+    }, [])
 
     useEffect(() => {
-        setIsLoading(true);
-        loadProducts().then(() => {
+        const loadingProducts = async () => {
+            setIsLoading(true);
+            await loadProducts();
             setIsLoading(false);
-        });
+        }
+        loadingProducts();
     }, [dispatch, loadProducts, setIsLoading]);
 
 
@@ -64,7 +65,7 @@ const ProductsOverviewScreen = props => {
             )
         })
         return () => { }
-    }, [navigation, loadProducts]);
+    }, [navigation]);
 
 
 

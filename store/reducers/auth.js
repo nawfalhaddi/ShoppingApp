@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP } from '../types'
+import { LOGIN, SIGNUP, LOGOUT } from '../types'
 const initialState = {
     token: null,
     userId: null
@@ -6,6 +6,10 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
+        case LOGOUT:
+            return {
+                token: null, userId: null
+            }
         case LOGIN:
             return {
                 ...state,
